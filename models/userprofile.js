@@ -31,5 +31,5 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
     });
-    return Banner;
+    return User;
   };
