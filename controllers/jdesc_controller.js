@@ -9,6 +9,8 @@ exports.create = async (req, res) => {
         console.log(error);
     }
 };
+
+
 //find in db
 exports.findAll = async (req, res) => {
     try{

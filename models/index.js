@@ -21,7 +21,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.job = require('./job.js')(sequelize, Sequelize);
+db.job = require('./Job.js')(sequelize, Sequelize);
 db.user = require('./user.js')(sequelize, Sequelize);
 db.order = require('./order.js')(sequelize, Sequelize);
 
