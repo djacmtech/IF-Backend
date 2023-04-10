@@ -20,8 +20,16 @@ const sequelize = new Sequelize(
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-db.User = require('./userprofile.js')(sequelize, Sequelize);
+
 db.Jdes = require('./Job.js')(sequelize, Sequelize);
-db.payment = require('./payment.js')(sequelize, Sequelize);
+db.User = require('./user.js')(sequelize, Sequelize);
+db.payment = require('./order.js')(sequelize, Sequelize);
+
+db.User.hasMany(db.payment);
+db.payment.belongsTo(db.User);
+
+db.payment.hasMany(db.Jdes);
+db.Jdes.belongsTo(db.payment);
+
 module.exports = db;
  
