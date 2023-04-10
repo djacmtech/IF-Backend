@@ -1,18 +1,18 @@
 module.exports = (sequelize, DataTypes) => {
-    const Jdes = sequelize.define("Jdes", {
-      Jpos: {
+    const Job = sequelize.define("Job", {
+      role: {
         type: DataTypes.STRING,
       },
-      Cname: {
+      company: {
         type: DataTypes.STRING,
       },
-      Stipend: {
+      stipend: {
         type: DataTypes.STRING,
       },
-      Duration: {
+      duration: {
         type: DataTypes.STRING,
       },
-      Cdes: {
+      description: {
         type: DataTypes.STRING,
       },
       link: {
@@ -24,12 +24,12 @@ module.exports = (sequelize, DataTypes) => {
       perks: {
         type: DataTypes.STRING,
       },
-      Resume: {
+      resume: {
         type: DataTypes.STRING,
       },
-      Acm_member: {
+      acmMember: {
         type: DataTypes.STRING,
       },
     });
-    return Jdes;
+    return Job;
   };

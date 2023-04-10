@@ -21,7 +21,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.User = require('./userprofile.js')(sequelize, Sequelize);
-db.Jdes = require('./Jdesc.js')(sequelize, Sequelize);
+db.Jdes = require('./Job.js')(sequelize, Sequelize);
 db.payment = require('./payment.js')(sequelize, Sequelize);
 module.exports = db;
  
