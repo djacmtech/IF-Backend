@@ -9,6 +9,15 @@ exports.create = async (req, res) => {
         console.log(error);
     }
 };
+
+//login user
+exports.login = async (req, res) => {
+    try{
+    }catch(error){
+        console.log(error);
+    }
+}
+
 //find in db
 exports.findAll = async (req, res) => {
     try{

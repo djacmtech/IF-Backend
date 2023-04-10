@@ -21,15 +21,15 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.Jdes = require('./Job.js')(sequelize, Sequelize);
-db.User = require('./user.js')(sequelize, Sequelize);
-db.payment = require('./order.js')(sequelize, Sequelize);
+db.job = require('./job.js')(sequelize, Sequelize);
+db.user = require('./user.js')(sequelize, Sequelize);
+db.order = require('./order.js')(sequelize, Sequelize);
 
-db.User.hasMany(db.payment);
-db.payment.belongsTo(db.User);
+db.user.hasMany(db.order);
+db.order.belongsTo(db.user);
 
-db.payment.hasMany(db.Jdes);
-db.Jdes.belongsTo(db.payment);
+db.order.hasMany(db.job);
+db.job.belongsTo(db.order);
 
 module.exports = db;
  

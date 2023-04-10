@@ -8,15 +8,15 @@ const imageFilter = (req, file, cb) => {
   }
 };
 
-var imageStorage = multer.diskStorage({
+var pdfStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null,'./resources/uploads');
+    cb(null,'./resources/pdfs');
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 
-uploadImage = multer({ storage: imageStorage, fileFilter: imageFilter });
+uploadImage = multer({ storage: pdfStorage, fileFilter: imageFilter });
 
 module.exports = uploadImage;

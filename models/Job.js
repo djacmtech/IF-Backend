@@ -6,10 +6,22 @@ module.exports = (sequelize, DataTypes) => {
       company: {
         type: DataTypes.STRING,
       },
+      logo: {
+        type: DataTypes.STRING,
+      },
+      location: {
+        type: DataTypes.STRING,
+      },
+      mode: {
+        type: DataTypes.STRING,
+      },
       stipend: {
         type: DataTypes.STRING,
       },
       duration: {
+        type: DataTypes.STRING,
+      },
+      about: {
         type: DataTypes.STRING,
       },
       description: {
@@ -18,17 +30,14 @@ module.exports = (sequelize, DataTypes) => {
       link: {
         type: DataTypes.JSON,
       },
+      requirements: {
+        type: DataTypes.JSON,
+      },
       skills: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
       },
       perks: {
-        type: DataTypes.STRING,
-      },
-      resume: {
-        type: DataTypes.STRING,
-      },
-      acmMember: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
       },
     });
     return Job;
