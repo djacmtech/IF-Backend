@@ -1,17 +1,17 @@
-const db = require('../../models');
-const user = db.User; //user table from db
+const db = require('../models');
+const user = db.user; //user table from db
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const mime = require('mime-types');
 
-const register = require("../../middleware/register.js");
-const login = require("../../middleware/login.js");
+const register = require("../middleware/register.js");
+const login = require("../middleware/login.js");
 
 const SALT = 10;
 //create or Register
-exports.create = async (req, res) => {
+exports.register = async (req, res) => {
     try {
         console.log(req.body);
 

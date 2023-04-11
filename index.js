@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 
-// require('./routes/routes.js')(app);
+require('./routes/routes.js')(app);
 app.use(express.static(__dirname + "/public"));
 
 app.get('/', (req, res) => {
