@@ -6,6 +6,9 @@ const bcrypt = require("bcryptjs");
 
 const mime = require('mime-types');
 
+const register = require("../../middleware/register.js");
+const login = require("../../middleware/login.js");
+
 const SALT = 10;
 //create or Register
 exports.create = async (req, res) => {
