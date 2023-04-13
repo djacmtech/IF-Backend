@@ -24,7 +24,7 @@ exports.create = async (req, res) => {
 //find in db
 exports.findAll = async (req, res) => {
     try{
-        const { lowStipend, highStipend, mode, role } = req.query;
+        const { lowStipend, highStipend, mode, role } = req.query; 
         let where = {};
         if (lowStipend && highStipend) {
             where = {

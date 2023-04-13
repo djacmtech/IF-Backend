@@ -6,7 +6,7 @@ const User = db.user;
 exports.registerValidate = (data) => {
     const schema = joi.object().keys({
         email: joi.string().email().required().label('email'),
-        password: joi.string().required().label('password'),
+        password: passwordComplexity().required().label('password'),
         confirmPassword: joi.ref('password'),
     });
     return schema.validate(data);

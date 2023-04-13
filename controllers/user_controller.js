@@ -17,15 +17,15 @@ exports.register = async (req, res) => {
 
         const checkData = {
           email: req.body.email,
-          //sap : req.body.sap,
           password: req.body.password,
-          //resume : req.body.resume,
           confirmPassword: req.body.confirmPassword,
         };
         const { error } = register.registerValidate(checkData);
         if (error) {
           console.log(error);
-          return res.status(400).send(error.details[0].message);
+          return res.status(400).send({
+            message: error.details[0].message,
+          });
         }
 
         const User = await user.findOne({
@@ -34,8 +34,16 @@ exports.register = async (req, res) => {
           },
         });
         if (User) {
-          return res.status(400).send("user already registered.");
+          return res.status(400).send({
+            message: "User already registered",
+          });
         }
+
+        //get pdf from req files and store it on cloudinary and store the link in db
+        const file = req.files.file;
+        const uploadResponse = await cloudinary.uploader.upload(file.tempFilePath);
+        console.log(uploadResponse);
+        const pdfurl = uploadResponse.url;
 
         //validate pdf
         /*const checkPDF = res.headers['content-type'];
@@ -48,11 +56,10 @@ exports.register = async (req, res) => {
         }*/
 
         //yeh ig hona chaiye validate
-        const userspass = req.body.password;
-        const cp = req.body.confirmPassword;
-        if(userspass != cp){
-            console.log(error);
-            return res.status(400).send("password mismatch");
+        if(req.body.password != req.body.confirmPassword){
+            return res.status(400).send({
+                message: "Password does not match",
+            });
         }
         
         //genSalt does hashing Salt is random value added to pwd
@@ -61,13 +68,27 @@ exports.register = async (req, res) => {
 
         //data to be saved
         await user.create({
-          ...req.body,
-          password: hashedPassword,
+            name: req.body.name,
+            email: req.body.email,
+            password: hashedPassword,
+            sap: req.body.sap,
+            contact: req.body.contact,
+            gender: req.body.gender,
+            graduationYear: req.body.graduationYear,
+            academicYear : req.body.academicYear,
+            department: req.body.department,
+            acmMember: req.body.acmMember,
+            resume: pdfurl,
         });
-        res.send({ data: req.body });
+        return res.status(200).send({
+            message: "user registered successfully",
+            data: User,
+        });
       } catch (err) {
         console.log(err);
-        res.status(500).send(err);
+        return res.status(500).send({
+            message: err.message || "Some error occurred while creating the user.",
+        });
       }
     };
 
@@ -78,16 +99,16 @@ exports.login = async(req,res) => {
         //collect data
         const checkData = {
             email : req.body.email,
-            sap : req.body.sap,
             password : req.body.password
-
         };
 
         //checks if feilds are filled or not
         const { error } = login.loginValidate(checkData);
         if(error){
             console.log(error);
-            return res(400).send(error.details[0].message);
+            return res(400).send({
+                message: error.details[0].message,
+            });
         }
 
         //query the db to find corresponding data
@@ -100,23 +121,30 @@ exports.login = async(req,res) => {
 
         //if query not found
         if (!user){
-            return res.status(400).send("enter correct details");
+            return res.status(400).send({
+                message: "User not found",
+            });
         }
         //crosscheck pwd 
         const validPassword = await bcrypt.compare(
             req.body.password,
-            admin.password
+            user.password
         );
         if (!validPassword) {
-            return res.status(400).send("enter correct password");
+            return res.status(400).send({
+                message: "Invalid password",
+            });
         }
-        res.send({
-            data:user,
+        return res.status(200).send({
+            message: "user logged in successfully",
+            data: user,
         });
     } 
     catch(error) {
             console.log(error);
-            res.status(500).send(error);
+            return res.status(500).send({
+                message: error.message || "Some error occurred while logging in the user.",
+            });
     }
 };
 
@@ -124,8 +152,14 @@ exports.login = async(req,res) => {
 exports.findAll = async (req, res) => {
     try{
         const users = await user.findAll();
-        res.send(users);
+        return res.status(200).send({
+            message: "user found successfully",
+            data: users,
+        });
     }catch(error){
         console.log(error);
+        return res.status(500).send({
+            message: error.message || "Some error occurred while finding the user.",
+        });
     }
 }
