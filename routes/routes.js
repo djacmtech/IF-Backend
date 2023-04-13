@@ -5,6 +5,7 @@ module.exports = (app) => {
 
     router.post("/register", user.register);
     router.post("/login", user.login);
+    router.get("/find",user.findAll)
     
     router.post("/add-job", job.create);
     router.get("/get-jobs", job.findAll);

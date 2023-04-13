@@ -17,9 +17,9 @@ exports.register = async (req, res) => {
 
         const checkData = {
           email: req.body.email,
-          sap : req.body.sap,
+          //sap : req.body.sap,
           password: req.body.password,
-          resume : req.body.resume,
+          //resume : req.body.resume,
           confirmPassword: req.body.confirmPassword,
         };
         const { error } = register.registerValidate(checkData);
@@ -30,7 +30,7 @@ exports.register = async (req, res) => {
 
         const User = await user.findOne({
           where: {
-            sap: req.body.sap,
+            email: req.body.email,
           },
         });
         if (User) {
@@ -38,17 +38,19 @@ exports.register = async (req, res) => {
         }
 
         //validate pdf
-        const checkPDF = res.headers['content-type'];
+        /*const checkPDF = res.headers['content-type'];
         const mimeType = mime.getType(checkPDF);
         if (mimeType === 'application/pdf'){
             //idk what to write here... acc to google continue aana chaiye
         }
         else{
             return res.status(400).send("please enter valid file in pdf")
-        }
+        }*/
 
         //yeh ig hona chaiye validate
-        if(password != confirmPassword){
+        const userspass = req.body.password;
+        const cp = req.body.confirmPassword;
+        if(userspass != cp){
             console.log(error);
             return res.status(400).send("password mismatch");
         }
@@ -58,7 +60,7 @@ exports.register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
         //data to be saved
-        await Admin.create({
+        await user.create({
           ...req.body,
           password: hashedPassword,
         });
@@ -121,7 +123,7 @@ exports.login = async(req,res) => {
 //find in db
 exports.findAll = async (req, res) => {
     try{
-        const users = await User.findAll();
+        const users = await user.findAll();
         res.send(users);
     }catch(error){
         console.log(error);
