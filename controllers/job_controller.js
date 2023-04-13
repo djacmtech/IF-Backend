@@ -24,7 +24,35 @@ exports.create = async (req, res) => {
 //find in db
 exports.findAll = async (req, res) => {
     try{
-        const Jobs = await job.findAll();
+        const { lowStipend, highStipend, mode, role } = req.query;
+        let where = {};
+        if (lowStipend && highStipend) {
+            where = {
+                ...where,
+                stipend: {
+                    [Op.between]: [lowStipend, highStipend],
+                },
+            };
+        }
+        if (mode) {
+            where = {
+                ...where,
+                mode: {
+                    [Op.like]: `%${mode}%`,
+                },
+            };
+        }
+        if (role) {
+            where = {
+                ...where,
+                role: {
+                    [Op.like]: `%${role}%`,
+                },
+            };
+        }
+        const Jobs = await job.findAll({
+            where,
+        });
         res.status(200).send({
             message: "Jobs fetched successfully",
             data: Jobs
