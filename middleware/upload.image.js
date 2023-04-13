@@ -1,22 +1,35 @@
 const multer = require("multer");
 
-const imageFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image")) {
-    cb(null, true);
-  } else {
-    cb("Please upload only images.", false);
-  }
+const multerFilter = (req, file, cb) => {
+	if (file.mimetype.startsWith('image')) {
+		cb(null, true);
+	} else {
+		cb(
+			{
+				message: 'Unsupported file format',
+			},
+			false
+		);
+	}
 };
 
-var pdfStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null,'./resources/pdfs');
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
+
+const multerStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "resources/images");
+    },
+    filename: (req, file, cb) => {
+      const ext = file.mimetype.split("/")[1];
+      cb(null, `${file.fieldname}-${Date.now()}.${ext}`);
+    },
 });
 
-uploadImage = multer({ storage: pdfStorage, fileFilter: imageFilter });
 
-module.exports = uploadImage;
+const imageUpload = multer({
+    storage: multerStorage,
+	filter: multerFilter,
+});
+
+module.exports = {
+    imageUpload
+}

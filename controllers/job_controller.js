@@ -1,5 +1,6 @@
 const db = require('../models');
 const job = db.job; //user table from db
+const Op = db.Sequelize.Op;
 
 const cloudinary = require("../middleware/upload.image.js");
 
@@ -53,6 +54,11 @@ exports.findAll = async (req, res) => {
         const Jobs = await job.findAll({
             where,
         });
+        if (Jobs.length === 0) {
+            return res.status(200).send({
+                message: "No Jobs found",
+            });
+        }
         res.status(200).send({
             message: "Jobs fetched successfully",
             data: Jobs

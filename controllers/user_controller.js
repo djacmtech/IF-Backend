@@ -40,10 +40,18 @@ exports.register = async (req, res) => {
         }
 
         //get pdf from req files and store it on cloudinary and store the link in db
-        const file = req.files.file;
-        const uploadResponse = await cloudinary.uploader.upload(file.tempFilePath);
-        console.log(uploadResponse);
-        const pdfurl = uploadResponse.url;
+        if(!req.file){
+            return res.status(400).send({
+                message: "Resume can not be empty"
+            });
+        }
+        const localPath = `resources/pdfs/${req.file.filename}`;
+        const uploadedImg = await cloudinaryUploadImage(localPath);
+        console.log(uploadedImg.url);
+        const pdfurl = uploadedImg.url;
+
+        //delete the file from local storage
+        
 
         //validate pdf
         /*const checkPDF = res.headers['content-type'];
