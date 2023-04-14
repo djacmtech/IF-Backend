@@ -25,16 +25,27 @@ exports.create = async (req, res) => {
 //find in db
 exports.findAll = async (req, res) => {
     try{
-        const { lowStipend, highStipend, mode, role } = req.query; 
-        let where = {};
-        if (lowStipend && highStipend) {
-            where = {
-                ...where,
+        const { lowStipend, highStipend, mode, role } = req.body; 
+        // let where = {};
+        // if (lowStipend && highStipend) {
+        //     where = {
+        //         ...where,
+        //         stipend: {
+        //             [Op.between]: [lowStipend, highStipend],
+        //         },
+        //     };
+        // }
+
+        //not working
+        const where = {
+            [Op.or]: [{
                 stipend: {
-                    [Op.between]: [lowStipend, highStipend],
-                },
-            };
-        }
+                    [Op.between]: [lowStipend, highStipend]
+                }
+            
+            }]
+        };
+
         if (mode) {
             where = {
                 ...where,
