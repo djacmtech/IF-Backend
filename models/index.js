@@ -24,6 +24,7 @@ db.sequelize = sequelize;
 db.job = require('./Job.js')(sequelize, Sequelize);
 db.user = require('./user.js')(sequelize, Sequelize);
 db.order = require('./order.js')(sequelize, Sequelize);
+db.cart = require('./cart.js')(sequelize, Sequelize);
 
 db.user.hasMany(db.order);
 db.order.belongsTo(db.user);

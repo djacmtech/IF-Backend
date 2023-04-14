@@ -6,6 +6,8 @@ const { imageUpload } = require("../middleware/upload.image");
 module.exports = (app) => {
   const user = require("../controllers/user_controller");
   const job = require("../controllers/job_controller");
+  const cart = require("../controllers/cart_controller");
+
   const router = require("express").Router();
 
   router.post("/register", uploadPdf.single("resume"), user.register);
@@ -14,6 +16,9 @@ module.exports = (app) => {
 
   router.post("/add-job", job.create);
   router.get("/get-jobs", job.findAll);
+
+  router.post("/add-to-cart", cart.addTocart);
+  router.get("/get-cart", cart.getCart);
 
   app.use("/api/acm-if", router);
 };
