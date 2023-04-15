@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       stipend: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
       },
       duration: {
         type: DataTypes.STRING,
