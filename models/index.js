@@ -21,7 +21,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.job = require('./Job.js')(sequelize, Sequelize);
+db.job = require('./job.js')(sequelize, Sequelize);
 db.user = require('./user.js')(sequelize, Sequelize);
 db.order = require('./order.js')(sequelize, Sequelize);
 db.cart = require('./cart.js')(sequelize, Sequelize);
@@ -31,6 +31,13 @@ db.order.belongsTo(db.user);
 
 db.order.hasMany(db.job);
 db.job.belongsTo(db.order);
+
+//cart can have many jobs and is associated with a user
+db.cart.belongsTo(db.user);
+db.user.hasMany(db.cart);
+
+db.cart.hasMany(db.job);
+db.job.belongsTo(db.cart);
 
 module.exports = db;
  

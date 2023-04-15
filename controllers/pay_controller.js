@@ -1,20 +1,26 @@
 const db = require('../../models');
-const pay = db.payment;
+const order = db.order;
+const cart = db.cart;
+const user = db.user;
 
-exports.create = async (req, res) => {
+exports.getSummary = async (req, res) => {
     try{
-        const Payments = await pay.create(req.body);     //create jdesc.model ka tuple and store in jobdes
-        res.send(Payments);
+        const {userId} = req.body;
+        const userData = await user.findOne({
+            where: {
+                id: userId
+            }
+        });
+        const cartData = await cart.findAll({
+            where: {
+                userId: userId
+            }
+        });
+        
     }catch(error){
         console.log(error);
+        return res.send(500).send({
+            message: error.message || "error."
+        });
     }
 };
-//find in db
-exports.findAll = async (req, res) => {
-    try{
-        const pays = await pay.findAll();
-        res.send(pays);
-    }catch(error){
-        console.log(error);
-    }
-}
