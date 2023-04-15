@@ -115,7 +115,7 @@ exports.login = async (req, res) => {
     const { error } = login.loginValidate(checkData);
     if (error) {
       console.log(error);
-      return res(400).send({
+      return res.status(400).send({
         message: error.details[0].message,
       });
     }
