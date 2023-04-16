@@ -13,9 +13,11 @@ module.exports = (app) => {
   router.post("/register", uploadPdf.single("resume"), user.register);
   router.post("/login", user.login);
   router.get("/get-users", user.findAll);
+  router.get("/get-user/:id", user.findOne);
 
   router.post("/add-job", job.create);
   router.get("/get-jobs", job.findAll);
+  router.get("/get-job/:id", job.findOne);
 
   router.post("/add-to-cart", cart.addTocart);
   router.get("/get-cart", cart.getCart);

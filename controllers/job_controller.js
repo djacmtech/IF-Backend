@@ -4,9 +4,7 @@ const Op = db.Sequelize.Op;
 
 const cloudinary = require("../middleware/upload.image.js");
 
-//pls check krlena....tera hi code hai..bas changes karre hai
-//checked and changes done
-//will store the logos in google drive so no cloudinary required to reduce the load on cloudinary
+//create
 exports.create = async (req, res) => {
     try{
         console.log(req.body);
@@ -67,3 +65,23 @@ exports.findAll = async (req, res) => {
         console.log(error);
     }
 };
+
+//find in db
+exports.findOne = async (req, res) => {
+    try{
+        const { id } = req.body;
+        const Job = await job.findByPk(id);
+        if (Job) {
+            res.status(200).send({
+                message: "Job fetched successfully",
+                data: Job
+            });
+        } else {
+            res.status(404).send({
+                message: "Job not found"
+            });
+        }
+    }catch(error){
+        console.log(error);
+    }
+}

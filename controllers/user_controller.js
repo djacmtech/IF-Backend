@@ -179,3 +179,25 @@ exports.findAll = async (req, res) => {
     });
   }
 };
+
+//find by id
+exports.findOne = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const User = await user.findByPk(id);
+    if (!User) {
+      return res.status(400).send({
+        message: "User not found",
+      });
+    }
+    return res.status(200).send({
+      message: "user found successfully",
+      data: User,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      message: error.message || "Some error occurred while finding the user.",
+    });
+  }
+}
