@@ -1,5 +1,5 @@
 const dbConfig = require("../configs/db.config");
-const { Sequelize, DataTypes } = require("sequelize");
+const { Sequelize, DataTypes, BelongsToMany } = require("sequelize");
 
 const sequelize = new Sequelize(
   dbConfig.database,
@@ -32,12 +32,21 @@ db.order.belongsTo(db.user);
 db.order.hasMany(db.job);
 db.job.belongsTo(db.order);
 
-//cart can have many jobs and is associated with a user
+//one user can have one cart and that cart can have many jobs but one job can be in diff user's cart
+db.user.hasOne(db.cart);
 db.cart.belongsTo(db.user);
-db.user.hasMany(db.cart);
 
-db.cart.hasMany(db.job);
-db.job.belongsTo(db.cart);
+db.cart.belongsToMany(db.job, { 
+  through: 'cartjob',
+  foreignKey: 'cartId',
+  otherKey: 'jobId' 
+}); // A cart can have many jobs
+db.job.belongsToMany(db.cart, { 
+  through: 'cartjob',
+  foreignKey: 'jobId',
+  otherKey: 'cartId' 
+}); // A job can belong to many carts
+
 
 module.exports = db;
  
