@@ -20,6 +20,7 @@ module.exports = (app) => {
   router.get("/get-job/:id", job.findOne);
 
   router.post("/add-to-cart", cart.addTocart);
+  router.post("/remove-from-cart", cart.removeFromCart);
   router.get("/get-cart", cart.getCart);
 
   app.use("/api/acm-if", router);
