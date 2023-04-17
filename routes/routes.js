@@ -16,7 +16,7 @@ module.exports = (app) => {
   router.get("/get-users", user.findAll);
   router.get("/get-user/:id", user.findOne);
 
-  router.post("/add-job", job.create);
+  router.post("/add-job", imageUpload.single("logo"), job.create);
   router.get("/get-jobs", job.findAll);
   router.get("/get-job/:id", job.findOne);
 

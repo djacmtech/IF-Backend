@@ -16,7 +16,7 @@ const multerFilter = (req, file, cb) => {
 
 const multerStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, "resources/images");
+      cb(null, "resources/logos");
     },
     filename: (req, file, cb) => {
       const ext = file.mimetype.split("/")[1];
