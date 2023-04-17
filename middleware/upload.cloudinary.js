@@ -24,6 +24,25 @@ const cloudinaryUploadPdf = async (fileToUpload) => {
         }
     }
 }
+//For uploading imgs
+const cloudinaryUploadLogo = async (fileToUpload) => {
+    try{
+        const data = await cloudinary.uploader.upload(fileToUpload, {
+            resource_type: "auto",
+            folder: "Logos",
+            use_filename: true,
+            unique_filename: false,
+        });
+        return {
+            url: data?.url,
+        }
+    }catch(error){
+        console.log(error);
+        return {
+            url: null,
+        }
+    }
+}
 
 module.exports = {
     cloudinaryUploadPdf

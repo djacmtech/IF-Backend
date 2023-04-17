@@ -2,13 +2,39 @@ const db = require('../models');
 const job = db.job; //user table from db
 const Op = db.Sequelize.Op;
 
-const cloudinary = require("../middleware/upload.image.js");
-
+//const cloudinary = require("../middleware/upload.image.js");
+const { cloudinaryUploadLogo } = require("../middleware/upload.cloudinary.js");
 //create
 exports.create = async (req, res) => {
     try{
         console.log(req.body);
-        const Job = await job.create(req.body);
+        if (!req.file) {
+            return res.status(400).send({
+              message: "Image can not be empty",
+            });
+          }
+        const localPath = `resources/logos/${req.file.filename}`;
+        const uploadedLogo = await cloudinaryUploadLogo(localPath);
+        const logourl = uploadedLogo.url;
+
+        const Job = await job.create({
+            role :req.body.role,
+            company :req.body.company,
+            location :req.body.location,
+            mode :req.body.mode,
+            stipend :req.body.stipend,
+            duration :req.body.duration,
+            about :req.body.about,
+            about :req.body.about,
+            description :req.body.description,
+            link :req.body.link,
+            requirement :req.body.requirement,
+            skills :req.body.skills,
+            perks:req.body.perks,
+            logo: logourl,
+            
+
+        });
         res.status(200).send({
             message: "Job added successfully",
             data: Job
