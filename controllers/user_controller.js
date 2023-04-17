@@ -48,6 +48,14 @@ exports.register = async (req, res) => {
     const localPath = `resources/pdfs/${req.file.filename}`;
     const uploadedPdf = await cloudinaryUploadPdf(localPath);
     const pdfurl = uploadedPdf.url;
+    
+    fs.unlink(localPath, (err) => {
+      if (err) {
+        console.log('Failed to delete local file:', err);
+      } else {
+        console.log('Local file deleted successfully.');
+      }
+    });
 
     if (req.body.password != req.body.confirmPassword) {
       return res.status(400).send({
