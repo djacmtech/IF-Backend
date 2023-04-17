@@ -5,10 +5,13 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 const mime = require("mime-types");
+const fs = require("fs");
 
 const register = require("../middleware/register.js");
 const login = require("../middleware/login.js");
 const { cloudinaryUploadPdf } = require("../middleware/upload.cloudinary.js");
+
+const members = require("../membership/members.js")
 
 const SALT = 10;
 //create or Register
@@ -68,11 +71,17 @@ exports.register = async (req, res) => {
 
     let creds = 0;
 
-    if (parseInt(req.body.acmMember, 10) === 1) {
+    if(members.includes(req.body.sap)){
       creds = 3;
-    } else {
+    }else{
       creds = 0;
     }
+
+    // if (parseInt(req.body.acmMember, 10) === 1) {
+    //   creds = 3;
+    // } else {
+    //   creds = 0;
+    // }
     //data to be saved
     const UserData = await user.create({
       name: req.body.name,
