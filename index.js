@@ -28,6 +28,11 @@ app.get('/', (req, res) => {
 }
 );
 
+app.get('/health', (req, res) => {
+    res.send('Heartbeat');
+}
+);
+
 app.get('/cors', (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
     res.send('Hello World!');
