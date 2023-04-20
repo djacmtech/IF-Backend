@@ -1,7 +1,7 @@
 const db = require("../models");
 const job = db.job; //user table from db
 const Op = db.Sequelize.Op;
-
+const fs = require("fs");
 //const cloudinary = require("../middleware/upload.image.js");
 const { cloudinaryUploadLogo } = require("../middleware/upload.cloudinary.js");
 //create
@@ -17,6 +17,13 @@ exports.create = async (req, res) => {
     const localPath = `resources/logos/${req.file.filename}`;
     const uploadedLogo = await cloudinaryUploadLogo(localPath);
     const logourl = uploadedLogo.url;
+    fs.unlink(localPath, (err) => {
+      if (err) {
+        console.log('Failed to delete local file:', err);
+      } else {
+        console.log('Local file deleted successfully.');
+      }
+    });
 
     const Job = await job.create({
       role: req.body.role,
