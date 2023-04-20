@@ -169,3 +169,35 @@ exports.getCart = async (req, res) => {
     });
   }
 };
+
+//find in db
+exports.viewCart = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    //find cart in db and then include jobs from jobs table in cartData
+    let cartData = await cart.findOne({
+      where: {
+        userId,
+      },
+      include: [
+        {
+          model: job,
+        },
+      ],
+    });
+    if(!cartData){
+        return res.status(404).send({
+            message: "Cart not found"
+        });
+    }
+    return res.status(200).send({
+      message: "Cart found",
+      data: cartData,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      message: error.message || "error.",
+    });
+  }
+};

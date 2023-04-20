@@ -193,3 +193,63 @@ exports.findOneOrder = async (req, res) => {
         });
     }
 }
+
+exports.viewHistory = async (req, res) => {
+    try{
+        const {userId} = req.params;
+        const userOrders = await order.findAll({
+            where: {
+                userId: userId
+            },
+            include: [
+                {
+                    model: job
+                }
+            ]
+        });
+        if(!userOrders){
+            return res.status(404).send({
+                message: "No orders found."
+            });
+        }
+        return res.status(200).send({
+            message: "Orders found",
+            data: userOrders
+        });
+    }catch(error){
+        console.log(error);
+        return res.send(500).send({
+            message: error.message || "error."
+        });
+    }
+};
+
+exports.viewOrder = async (req, res) => {
+    try{
+        const {orderId} = req.params;
+        const orderData = await order.findOne({
+            where: {
+                id: orderId
+            },
+            include: [
+                {
+                    model: job
+                }
+            ]
+        });
+        if(!orderData){
+            return res.status(404).send({
+                message: "Order not found."
+            });
+        }
+        return res.status(200).send({
+            message: "Order found",
+            data: orderData
+        });
+    }catch(error){
+        console.log(error);
+        return res.send(500).send({
+            message: error.message || "error."
+        });
+    }
+}
