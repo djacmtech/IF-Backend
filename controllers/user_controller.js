@@ -1,5 +1,6 @@
 const db = require("../models");
 const user = db.user; //user table from db
+const cart = db.cart; //cart table from db
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -105,6 +106,12 @@ exports.register = async (req, res) => {
       },
       process.env.JWT_SECRET
     );
+
+    //create cart for user
+    const cart = await cart.create({
+      userId: UserData.id,
+    });
+
     return res.status(200).send({
       message: "user registered successfully",
       data: UserData,

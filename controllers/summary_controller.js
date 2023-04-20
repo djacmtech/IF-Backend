@@ -6,11 +6,11 @@ const order = db.order;
 
 exports.calculateSummary = async (req, res) => {
     try{
-        const { userId, cartId } = req.body;
+        const { userId } = req.body;
         //find cart in db and then include jobs from jobs table in cartData
         let cartData = await cart.findOne({
             where: {
-                id: cartId,
+                userId,
             },
             include: [
                 {

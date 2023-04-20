@@ -6,11 +6,10 @@ const job = db.job;
 
 exports.addOrder = async (req, res) => {
     try{
-        const {userId, cartId} = req.body;
+        const {userId} = req.body;
         const userCart = await cart.findOne({
             where: {
-                userId: userId,
-                id: cartId
+                userId: userId
             },
             include: [
                 {
