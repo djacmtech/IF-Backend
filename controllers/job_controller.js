@@ -36,7 +36,7 @@ exports.create = async (req, res) => {
       about: req.body.about,
       description: req.body.description,
       link: req.body.link,
-      requirement: req.body.requirement,
+      requirements: req.body.requirements,
       skills: req.body.skills,
       perks: req.body.perks,
       logo: logourl,
@@ -87,6 +87,14 @@ exports.findAll = async (req, res) => {
         message: "No Jobs found",
       });
     }
+    //parse links requirments skills perks to JSON 
+    Jobs.forEach((job) => {
+      job.requirements = JSON.parse(job.requirements);
+      job.skills = JSON.parse(job.skills);
+      job.perks = JSON.parse(job.perks);
+      job.link = JSON.parse(job.link);
+    });
+
     res.status(200).send({
       message: "Jobs fetched successfully",
       data: Jobs,
