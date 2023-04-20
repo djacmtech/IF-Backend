@@ -2,6 +2,7 @@ const db = require("../models");
 const cart = db.cart;
 const job = db.job;
 const user = db.user;
+const order = db.order;
 
 exports.addTocart = async (req, res) => {
   try {
@@ -32,6 +33,32 @@ exports.addTocart = async (req, res) => {
         });
       }
     }
+
+    //find all orders of user
+    const userOrders = await order.findAll({
+      where: {
+        userId,
+      },
+      include: [
+        {
+          model: job,
+        },
+      ],
+    });
+
+    //check if the job is already ordered
+    if (userOrders.length > 0) {
+      for (let i = 0; i < userOrders.length; i++) {
+        console.log(userOrders[i])
+        const jobFound = userOrders[i].jobs.find((job) => job.id === parseInt(jobId, 10));
+        if (jobFound) {
+          return res.status(400).send({
+            message: "Job already ordered",
+          });
+        }
+      }
+    }
+
     //if job is not in cart then add it to cart
     await cartData.addJob(jobId);
     

@@ -44,6 +44,27 @@ const cloudinaryUploadLogo = async (fileToUpload) => {
     }
 }
 
+const cloudinaryUploadReceipt = async (fileToUpload) => {
+    try{
+        const data = await cloudinary.uploader.upload(fileToUpload, {
+            resource_type: "auto",
+            folder: "Receipts",
+            use_filename: true,
+            unique_filename: false,
+        });
+        return {
+            url: data?.url,
+        }
+    }catch(error){
+        console.log(error);
+        return {
+            url: null,
+        }
+    }
+}
+
 module.exports = {
-    cloudinaryUploadPdf
+    cloudinaryUploadLogo,
+    cloudinaryUploadPdf,
+    cloudinaryUploadReceipt,
 }

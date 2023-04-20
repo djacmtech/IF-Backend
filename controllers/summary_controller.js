@@ -2,6 +2,7 @@ const db = require("../models");
 const cart = db.cart;
 const job = db.job;
 const user = db.user;
+const order = db.order;
 
 exports.calculateSummary = async (req, res) => {
     try{
@@ -55,10 +56,11 @@ exports.calculateSummary = async (req, res) => {
         return res.status(200).send({
             message: "Summary calculated",
             data: {
-                jobs,
                 credits,
                 totalPrice,
-                discount
+                discount,
+                cartId: cartData.id,
+                jobs,
             }
         });
     }catch(error){

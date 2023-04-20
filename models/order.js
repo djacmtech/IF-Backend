@@ -1,8 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const Order = sequelize.define("order", {
-    interviews: {
-      type: DataTypes.STRING,
-    },
     totalPrice: {
       type: DataTypes.STRING,
     },
@@ -10,6 +7,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
     paymentProof: {
+      type: DataTypes.STRING,
+    },
+    status: {
+      type: DataTypes.STRING,
+    },
+    discount: {
+      type: DataTypes.STRING,
+    },
+    creditsUsed: {
       type: DataTypes.STRING,
     },
   });
