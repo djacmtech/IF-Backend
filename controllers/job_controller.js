@@ -123,3 +123,35 @@ exports.findOne = async (req, res) => {
     console.log(error);
   }
 };
+
+//find in db 
+exports.viewJob = async (req, res) => {
+  try{
+    console.log("hello")
+    const { jobId } = req.params;
+    const Job = await job.findByPk(jobId);
+
+    //parse links requirments skills perks to JSON
+    Job.requirements = JSON.parse(Job.requirements);
+    Job.skills = JSON.parse(Job.skills);
+    Job.perks = JSON.parse(Job.perks);
+    Job.link = JSON.parse(Job.link);
+    
+    if (Job) {
+      res.status(200).send({
+        message: "Job fetched successfully",
+        data: Job,
+      });
+    } else {
+      res.status(404).send({
+        message: "Job not found",
+      });
+    }
+  }catch(error){
+    console.log(error);
+    return res.status(500).send({
+      message: "Error retrieving Job with id=" + jobId,
+      error: error,
+    });
+  }
+}

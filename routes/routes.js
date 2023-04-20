@@ -18,10 +18,12 @@ module.exports = (app) => {
   router.post("/login", user.login);
   router.get("/get-users", user.findAll);
   router.get("/get-user", user.findOne);
+  router.get("/get-users-data", user.findAllUsersWithOrders);
 
   router.post("/add-job", logoUpload.single("logo"), job.create);
   router.get("/get-jobs", job.findAll);
   router.get("/get-job", job.findOne);
+  router.get("/view-job/:jobId", job.viewJob);
 
   router.post("/add-to-cart", cart.addTocart);
   router.post("/remove-from-cart", cart.removeFromCart);

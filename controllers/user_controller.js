@@ -1,6 +1,8 @@
 const db = require("../models");
 const user = db.user; //user table from db
 const cart = db.cart; //cart table from db
+const order = db.order; //order table from db
+const job = db.job; //job table from db
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -108,7 +110,7 @@ exports.register = async (req, res) => {
     );
 
     //create cart for user
-    const cart = await cart.create({
+    const cartData = await cart.create({
       userId: UserData.id,
     });
 
@@ -222,6 +224,33 @@ exports.findOne = async (req, res) => {
     console.log(error);
     return res.status(500).send({
       message: error.message || "Some error occurred while finding the user.",
+    });
+  }
+}
+
+//find all users and their orders and orders should hold job data
+exports.findAllUsersWithOrders = async (req, res) => {
+  try{
+    const users = await user.findAll({
+      include: [
+        {
+          model: order,
+          include: [
+            {
+              model: job,
+            },
+          ],
+        },
+      ],
+    });
+    return res.status(200).send({
+      message: "user data found successfully",
+      data: users,
+    });
+  }catch(err){
+    console.log(err);
+    return res.status(500).send({
+      message: err.message || "Some error occurred while finding the user.",
     });
   }
 }
