@@ -29,7 +29,7 @@ module.exports = (app) => {
 
   router.get("/get-summary", summary.calculateSummary);
 
-  router.post("/create-order", order.addOrder);
+  router.post("/create-order",receiptUpload.single("paymentProof"), order.addOrder);
   router.get("/get-history", order.getHistory);
   router.get("/get-order", order.findOneOrder);
 

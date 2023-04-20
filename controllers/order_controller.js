@@ -7,7 +7,8 @@ const fs = require("fs");
 const { cloudinaryUploadReceipt } = require("../middleware/upload.cloudinary.js");
 exports.addOrder = async (req, res) => {
     try{
-        const {userId} = req.body;
+        const { userId } = req.body;
+        console.log(userId)
         const userCart = await cart.findOne({
             where: {
                 userId: userId
