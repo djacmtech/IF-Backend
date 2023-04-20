@@ -1,7 +1,9 @@
 //get multer middleware for pdf upload and destructure it
 const { uploadPdf } = require("../middleware/upload.pdf.js");
 //get multer middleware for image upload and destructure it
-const { imageUpload } = require("../middleware/upload.image");
+const { logoUpload } = require("../middleware/upload.logo.js");
+const { receiptUpload } = require("../middleware/upload.receipt.js");
+
 
 module.exports = (app) => {
   const user = require("../controllers/user_controller");
@@ -17,7 +19,7 @@ module.exports = (app) => {
   router.get("/get-users", user.findAll);
   router.get("/get-user", user.findOne);
 
-  router.post("/add-job", imageUpload.single("logo"), job.create);
+  router.post("/add-job", logoUpload.single("logo"), job.create);
   router.get("/get-jobs", job.findAll);
   router.get("/get-job", job.findOne);
 

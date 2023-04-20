@@ -25,11 +25,11 @@ const multerStorage = multer.diskStorage({
 });
 
 
-const imageUpload = multer({
+const logoUpload = multer({
     storage: multerStorage,
 	filter: multerFilter,
 });
 
 module.exports = {
-    imageUpload
+    logoUpload
 }
