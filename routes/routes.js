@@ -19,6 +19,7 @@ module.exports = (app) => {
   router.get("/get-users", user.findAll);
   router.get("/get-user", user.findOne);
   router.get("/get-users-data", user.findAllUsersWithOrders);
+  router.post("/forgot-password", user.forgotPassword);
 
   router.post("/add-job", logoUpload.single("logo"), job.create);
   router.get("/get-jobs", job.findAll);

@@ -254,3 +254,38 @@ exports.findAllUsersWithOrders = async (req, res) => {
     });
   }
 }
+
+//change password
+exports.forgotPassword = async (req, res) => {
+  try {
+    const User = await user.findOne({
+      where: {
+        email: req.body.email,
+      },
+    });
+    if (!User) {
+      return res.status(400).send({
+        message: "User not found",
+      });
+    }
+    if (req.body.password != req.body.confirmPassword) {
+      return res.status(400).send({
+        message: "Password does not match",
+      });
+    }
+    const salt = await bcrypt.genSalt(SALT);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const updatedUser = await User.update({
+      password: hashedPassword,
+    });
+    return res.status(200).send({
+      message: "password changed successfully",
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      message: error.message || "Some error occurred while changing password.",
+    });
+  }
+}
