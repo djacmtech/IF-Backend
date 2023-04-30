@@ -46,22 +46,24 @@ exports.register = async (req, res) => {
       });
     }
 
-    if (!req.file) {
-      return res.status(400).send({
-        message: "Resume can not be empty",
-      });
-    }
-    const localPath = `resources/pdfs/${req.file.filename}`;
-    const uploadedPdf = await cloudinaryUploadPdf(localPath);
-    const pdfurl = uploadedPdf.url;
+    //was used to upload pdf to cloudinary but now we are using resume url
     
-    fs.unlink(localPath, (err) => {
-      if (err) {
-        console.log('Failed to delete local file:', err);
-      } else {
-        console.log('Local file deleted successfully.');
-      }
-    });
+    // if (!req.file) {
+    //   return res.status(400).send({
+    //     message: "Resume can not be empty",
+    //   });
+    // }
+    // const localPath = `resources/pdfs/${req.file.filename}`;
+    // const uploadedPdf = await cloudinaryUploadPdf(localPath);
+    // const pdfurl = uploadedPdf.url;
+    
+    // fs.unlink(localPath, (err) => {
+    //   if (err) {
+    //     console.log('Failed to delete local file:', err);
+    //   } else {
+    //     console.log('Local file deleted successfully.');
+    //   }
+    // });
 
     if (req.body.password != req.body.confirmPassword) {
       return res.status(400).send({
@@ -97,7 +99,7 @@ exports.register = async (req, res) => {
       academicYear: req.body.academicYear,
       department: req.body.department,
       acmMember: creds,
-      resume: pdfurl,
+      resume: req.body.resume,
     });
 
     //jwt token and sign

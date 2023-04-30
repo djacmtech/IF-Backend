@@ -14,7 +14,7 @@ module.exports = (app) => {
 
   const router = require("express").Router();
 
-  router.post("/register", uploadPdf.single("resume"), user.register);
+  router.post("/register", user.register);
   router.post("/login", user.login);
   router.get("/get-users", user.findAll);
   router.get("/get-user", user.findOne);

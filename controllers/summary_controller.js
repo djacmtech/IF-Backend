@@ -18,6 +18,18 @@ exports.calculateSummary = async (req, res) => {
                 },
             ],
         });
+
+        let userOrderData = await order.findAll({
+            where: {
+                userId,
+            },
+            include: [
+                {
+                    model: job,
+                },
+            ],
+        });
+
         if(!cartData){
             return res.status(404).send({
                 message: "Cart not found"
@@ -38,13 +50,44 @@ exports.calculateSummary = async (req, res) => {
         let totalPrice = 0;
         //discount
         let discount = 0;
-        
-        //calculate total price using credits and jobs
+
+        let companyNames = [];
+
+        let prevCompanyNames = [];
+
+        //make an array of unique company names
         jobs.forEach((job) => {
-            if(credits > 0){
-                credits--;
+            if(!companyNames.includes(job.company)){
+                companyNames.push(job.company);
+            }
+        });
+        
+        //get all unique company names from previous orders
+        userOrderData.forEach((order) => {
+            order.jobs.forEach((job) => {
+                if(!prevCompanyNames.includes(job.company)){
+                    prevCompanyNames.push(job.company);
+                }
+            });
+        });
+
+        //calculate total price using credits and jobs
+        companyNames.forEach((job) => {
+            //compare job campany name with previous order company name if same then no credits change or else credits change
+            if(userOrderData.length === 0){
+                if(credits > 0){
+                    credits--;
+                }else{
+                    totalPrice += 50
+                }
             }else{
-                totalPrice += 50
+                if(!prevCompanyNames.includes(job)){
+                    if(credits > 0){
+                        credits--;
+                    }else{
+                        totalPrice += 50
+                    }
+                }
             }
         }
         );
@@ -85,6 +128,18 @@ exports.viewSummary = async (req, res) => {
                 },
             ],
         });
+
+        let userOrderData = await order.findAll({
+            where: {
+                userId,
+            },
+            include: [
+                {
+                    model: job,
+                },
+            ],
+        });
+
         if(!cartData){
             return res.status(404).send({
                 message: "Cart not found"
@@ -106,12 +161,43 @@ exports.viewSummary = async (req, res) => {
         //discount
         let discount = 0;
         
-        //calculate total price using credits and jobs
+        let companyNames = [];
+
+        let prevCompanyNames = [];
+
+        //make an array of unique company names
         jobs.forEach((job) => {
-            if(credits > 0){
-                credits--;
+            if(!companyNames.includes(job.company)){
+                companyNames.push(job.company);
+            }
+        });
+        
+        //get all unique company names from previous orders
+        userOrderData.forEach((order) => {
+            order.jobs.forEach((job) => {
+                if(!prevCompanyNames.includes(job.company)){
+                    prevCompanyNames.push(job.company);
+                }
+            });
+        });
+
+        //calculate total price using credits and jobs
+        companyNames.forEach((job) => {
+            //compare job campany name with previous order company name if same then no credits change or else credits change
+            if(userOrderData.length === 0){
+                if(credits > 0){
+                    credits--;
+                }else{
+                    totalPrice += 50
+                }
             }else{
-                totalPrice += 50
+                if(!prevCompanyNames.includes(job)){
+                    if(credits > 0){
+                        credits--;
+                    }else{
+                        totalPrice += 50
+                    }
+                }
             }
         }
         );
