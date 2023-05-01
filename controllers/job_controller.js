@@ -25,12 +25,16 @@ exports.create = async (req, res) => {
       }
     });
 
+    let stipendData = (req.body.lowStipend == req.body.highStipend) ? (req.body.highStipend) : (req.body.lowStipend + "-" + req.body.highStipend);
+
     const Job = await job.create({
       role: req.body.role,
       company: req.body.company,
       location: req.body.location,
       mode: req.body.mode,
-      stipend: req.body.stipend,
+      stipend: stipendData,
+      lowStipend: req.body.lowStipend,
+      highStipend: req.body.highStipend,
       duration: req.body.duration,
       about: req.body.about,
       about: req.body.about,
@@ -58,9 +62,19 @@ exports.findAll = async (req, res) => {
     if (lowStipend && highStipend) {
       where = {
         ...where,
-        stipend: {
-          [Op.between]: [lowStipend, highStipend],
-        },
+        //put in or condition
+        [Op.or]: [
+          {
+            lowStipend: {
+              [Op.between]: [lowStipend, highStipend],
+            },
+          },
+          {
+            highStipend: {
+              [Op.between]: [lowStipend, highStipend],
+            },
+          },
+        ],
       };
     }
     if (mode) {

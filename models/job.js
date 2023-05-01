@@ -16,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       stipend: {
+        type: DataTypes.STRING,
+      },
+      lowStipend: {
+        type: DataTypes.INTEGER,
+      },
+      highStipend: {
         type: DataTypes.INTEGER,
       },
       duration: {
