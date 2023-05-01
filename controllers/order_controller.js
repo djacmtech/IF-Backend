@@ -210,7 +210,7 @@ exports.getHistory = async (req, res) => {
 
 exports.findOneOrder = async (req, res) => {
     try{
-        const {orderId} = req.body;
+        const {orderId} = req.params;
         const orderData = await order.findOne({
             where: {
                 id: orderId

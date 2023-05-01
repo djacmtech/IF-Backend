@@ -11,6 +11,7 @@ module.exports = (app) => {
   const cart = require("../controllers/cart_controller");
   const summary = require("../controllers/summary_controller");
   const order = require("../controllers/order_controller");
+  const receipt = require("../controllers/receipt_controller");
 
   const router = require("express").Router();
 
@@ -44,6 +45,8 @@ module.exports = (app) => {
   //web
   router.get("/view-order/:orderId", order.viewOrder);
   router.get("/view-orders/:userId", order.viewHistory);
+
+  router.get("/get-receipt/:orderId", receipt.getReceipt);
 
   app.use("/api/acm-if", router);
 };
