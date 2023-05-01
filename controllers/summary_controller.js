@@ -43,7 +43,7 @@ exports.calculateSummary = async (req, res) => {
         }
 
         //take acmMember value from user
-        let credits = userData.acmMember;
+        let credits = parseInt(userData.acmMember);
         //take jobs from cart
         let jobs = cartData.jobs;
         //total price of jobs
