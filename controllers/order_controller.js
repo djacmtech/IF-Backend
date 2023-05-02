@@ -297,3 +297,18 @@ exports.viewOrder = async (req, res) => {
         });
     }
 }
+
+exports.totalMoneyFlow = async (req, res) => {
+    try{
+        const totalMoneyFlow = await order.sum('totalPrice');
+        return res.status(200).send({
+            message: "Total money flow",
+            data: totalMoneyFlow
+        });
+    }catch(error){
+        console.log(error);
+        return res.send(500).send({
+            message: error.message || "error."
+        });
+    }
+}
