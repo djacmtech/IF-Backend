@@ -313,3 +313,25 @@ exports.autoLogin = async (req, res) => {
     res.status(500).json({ message: 'Something went wrong' });
   }
 };
+
+exports.updateResume = async (req, res) => {
+  try{
+    const {userId, resume} = req.body;
+    const updatedUser = await user.update({
+      resume: resume,
+    },{
+      where: {
+        id: userId,
+      }
+    });
+    return res.status(200).send({
+      message: "user updated successfully",
+      data: updatedUser,
+    });
+  }catch(error){
+    console.log(error);
+    return res.status(500).send({
+      message: error.message || "Some error occurred while updating the user.",
+    });
+  }
+}

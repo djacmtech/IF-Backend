@@ -22,6 +22,7 @@ module.exports = (app) => {
   router.get("/get-users-data", user.findAllUsersWithOrders);
   router.post("/forgot-password", user.forgotPassword);
   router.post("/auto-login", user.autoLogin);
+  router.post("/update-resume", user.updateResume);
 
   router.post("/add-job", logoUpload.single("logo"), job.create);
   router.get("/get-jobs", job.findAll);
