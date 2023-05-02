@@ -43,7 +43,7 @@ module.exports = (app) => {
   router.post("/create-order",receiptUpload.single("paymentProof"), order.addOrder);
   router.get("/get-history", order.getHistory);
   router.get("/get-order", order.findOneOrder);
-  router.get("/track-payments", order.totalMoneyFlow);
+  router.get("/track-payments", order.trackPayments);
   //web
   router.get("/view-order/:orderId", order.viewOrder);
   router.get("/view-orders/:userId", order.viewHistory);

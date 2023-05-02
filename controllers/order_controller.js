@@ -298,12 +298,31 @@ exports.viewOrder = async (req, res) => {
     }
 }
 
-exports.totalMoneyFlow = async (req, res) => {
+exports.trackPayments = async (req, res) => {
     try{
         const totalMoneyFlow = await order.sum('totalPrice');
+        const totalCreditsUsed = await order.sum('creditsUsed');
+        const totalDiscount = await order.sum('discount');
+        const totalOrders = await order.count();
+        const totalJobs = await order.count({
+            include: [
+                {
+                    model: job
+                }
+            ]
+        });
+        const totalUsers = await user.count();
+        
         return res.status(200).send({
-            message: "Total money flow",
-            data: totalMoneyFlow
+            message: "IF YOU ARE SEEING THIS, YOU ARE A HACKER",
+            data: {
+                totalMoneyFlow: totalMoneyFlow,
+                totalCreditsUsed: totalCreditsUsed,
+                totalDiscount: totalDiscount,
+                totalOrders: totalOrders,
+                totalInterviews: totalJobs,
+                totalUsers: totalUsers
+            }
         });
     }catch(error){
         console.log(error);
