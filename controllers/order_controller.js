@@ -312,7 +312,12 @@ exports.trackPayments = async (req, res) => {
             ]
         });
         const totalUsers = await user.count();
-        
+        //find total users who have atleast one order
+        const totalUsersWithOrders = await order.count({
+            distinct: true,
+            col: 'userId'
+        });
+
         return res.status(200).send({
             message: "IF YOU ARE SEEING THIS, YOU ARE A HACKER",
             data: {
@@ -321,7 +326,8 @@ exports.trackPayments = async (req, res) => {
                 totalDiscount: totalDiscount,
                 totalOrders: totalOrders,
                 totalInterviews: totalJobs,
-                totalUsers: totalUsers
+                totalUsers: totalUsers,
+                totalUsersForInterview: totalUsersWithOrders
             }
         });
     }catch(error){
