@@ -23,6 +23,7 @@ module.exports = (app) => {
   router.post("/forgot-password", user.forgotPassword);
   router.post("/auto-login", user.autoLogin);
   router.post("/update-resume", user.updateResume);
+  router.get("/get-users-jobs", user.findUserWithJobs);
 
   router.post("/add-job", logoUpload.single("logo"), job.create);
   router.get("/get-jobs", job.findAll);

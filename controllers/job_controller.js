@@ -1,6 +1,7 @@
 const db = require("../models");
 const job = db.job; //user table from db
-//const user = db.user;
+const user = db.user;
+const order = db.order;
 const Op = db.Sequelize.Op;
 const fs = require("fs");
 //const cloudinary = require("../middleware/upload.image.js");

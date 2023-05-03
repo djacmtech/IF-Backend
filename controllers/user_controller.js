@@ -14,7 +14,7 @@ const register = require("../middleware/register.js");
 const login = require("../middleware/login.js");
 const { cloudinaryUploadPdf } = require("../middleware/upload.cloudinary.js");
 
-const members = require("../membership/members.js")
+const members = require("../membership/members.js");
 
 const SALT = 10;
 //create or Register
@@ -47,7 +47,7 @@ exports.register = async (req, res) => {
     }
 
     //was used to upload pdf to cloudinary but now we are using resume url
-    
+
     // if (!req.file) {
     //   return res.status(400).send({
     //     message: "Resume can not be empty",
@@ -56,7 +56,7 @@ exports.register = async (req, res) => {
     // const localPath = `resources/pdfs/${req.file.filename}`;
     // const uploadedPdf = await cloudinaryUploadPdf(localPath);
     // const pdfurl = uploadedPdf.url;
-    
+
     // fs.unlink(localPath, (err) => {
     //   if (err) {
     //     console.log('Failed to delete local file:', err);
@@ -76,9 +76,9 @@ exports.register = async (req, res) => {
 
     let creds = 0;
 
-    if(members.includes(req.body.sap)){
+    if (members.includes(req.body.sap)) {
       creds = 3;
-    }else{
+    } else {
       creds = 0;
     }
 
@@ -228,11 +228,11 @@ exports.findOne = async (req, res) => {
       message: error.message || "Some error occurred while finding the user.",
     });
   }
-}
+};
 
 //find all users and their orders and orders should hold job data
 exports.findAllUsersWithOrders = async (req, res) => {
-  try{
+  try {
     const users = await user.findAll({
       include: [
         {
@@ -249,13 +249,13 @@ exports.findAllUsersWithOrders = async (req, res) => {
       message: "user data found successfully",
       data: users,
     });
-  }catch(err){
+  } catch (err) {
     console.log(err);
     return res.status(500).send({
       message: err.message || "Some error occurred while finding the user.",
     });
   }
-}
+};
 
 //change password
 exports.forgotPassword = async (req, res) => {
@@ -290,12 +290,12 @@ exports.forgotPassword = async (req, res) => {
       message: error.message || "Some error occurred while changing password.",
     });
   }
-}
+};
 
 exports.autoLogin = async (req, res) => {
-  const token = req.headers.authorization?.split(' ')[1];
+  const token = req.headers.authorization?.split(" ")[1];
   if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
+    return res.status(401).json({ message: "No token provided" });
   }
 
   try {
@@ -303,35 +303,86 @@ exports.autoLogin = async (req, res) => {
     const decodedData = jwt.verify(token, process.env.JWT_SECRET);
 
     // Find the user in the database
-    const userData = await user.findOne({ where: { email: decodedData.email } });
+    const userData = await user.findOne({
+      where: { email: decodedData.email },
+    });
     if (!userData) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     res.status(200).json({ result: userData, token });
   } catch (error) {
-    res.status(500).json({ message: 'Something went wrong' });
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
 exports.updateResume = async (req, res) => {
-  try{
-    const {userId, resume} = req.body;
-    const updatedUser = await user.update({
-      resume: resume,
-    },{
-      where: {
-        id: userId,
+  try {
+    const { userId, resume } = req.body;
+    const updatedUser = await user.update(
+      {
+        resume: resume,
+      },
+      {
+        where: {
+          id: userId,
+        },
       }
-    });
+    );
     return res.status(200).send({
       message: "user updated successfully",
       data: updatedUser,
     });
-  }catch(error){
+  } catch (error) {
     console.log(error);
     return res.status(500).send({
       message: error.message || "Some error occurred while updating the user.",
     });
   }
-}
+};
+
+//make a controller to fetch all users and jobs they have applied for
+exports.findUserWithJobs = async (req, res) => {
+  try {
+    //find users which have orders
+    const users = await user.findAll({
+      include: [
+        {
+          model: order,
+          include: [
+            {
+              model: job,
+            },
+          ],
+        },
+      ],
+    });
+    //check if the orders have jobs
+    const filteredUsers = users.filter((user) => {
+      return user.orders.length > 0;
+    }
+    );
+    //make a new array of objects which have id, name, email of the users and company names they have applied for
+    //users and the company names they have applied for
+    const usersWithJobs = filteredUsers.map((user) => {
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        jobs: user.orders.map((order) => {
+          return order.jobs[0].company;
+        }),
+      };
+    });
+    return res.status(200).send({
+      message: "user data found successfully",
+      length: usersWithJobs.length,
+      data: usersWithJobs,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({
+      message: err.message || "Some error occurred while finding the user.",
+    });
+  }
+};
