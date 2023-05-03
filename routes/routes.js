@@ -40,7 +40,7 @@ module.exports = (app) => {
   //web
   router.get("/view-summary/:userId", summary.viewSummary);
 
-  router.post("/create-order",receiptUpload.single("paymentProof"), order.addOrder);
+  //router.post("/create-order",receiptUpload.single("paymentProof"), order.addOrder);
   router.get("/get-history", order.getHistory);
   router.get("/get-order", order.findOneOrder);
   router.get("/track-payments", order.trackPayments);

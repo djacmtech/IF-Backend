@@ -1,5 +1,6 @@
 const db = require("../models");
 const job = db.job; //user table from db
+//const user = db.user;
 const Op = db.Sequelize.Op;
 const fs = require("fs");
 //const cloudinary = require("../middleware/upload.image.js");
@@ -169,3 +170,8 @@ exports.viewJob = async (req, res) => {
     });
   }
 }
+
+//exports.getJobCount = async(req,res) => {
+  //var countUser = user.
+
+//}
